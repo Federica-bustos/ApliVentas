@@ -77,17 +77,21 @@ namespace ApliVentas.BD.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int?>("PrecioFinalid")
+                        .HasColumnType("int");
+
                     b.Property<string>("nombre")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<string>("precioProducto")
-                        .IsRequired()
+                    b.Property<int>("precioProducto")
                         .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("int");
 
                     b.HasKey("id");
+
+                    b.HasIndex("PrecioFinalid");
 
                     b.ToTable("Productos");
                 });
@@ -101,6 +105,18 @@ namespace ApliVentas.BD.Migrations
                         .IsRequired();
 
                     b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("ApliVentas.BD.Data.Entity.Producto", b =>
+                {
+                    b.HasOne("ApliVentas.BD.Data.Entity.PrecioFinal", null)
+                        .WithMany("ProductoList")
+                        .HasForeignKey("PrecioFinalid");
+                });
+
+            modelBuilder.Entity("ApliVentas.BD.Data.Entity.PrecioFinal", b =>
+                {
+                    b.Navigation("ProductoList");
                 });
 #pragma warning restore 612, 618
         }

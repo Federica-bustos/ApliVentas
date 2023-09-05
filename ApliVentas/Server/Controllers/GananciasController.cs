@@ -23,6 +23,17 @@ namespace ApliVentas.Server.Controllers
             return await context.Ganancias.ToListAsync();
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Ganancia>> Get(int id)
+        {
+            var existe = await context.Ganancias.AnyAsync(x => x.Id == id);
+            if (existe)
+            {
+                return NotFound($"La ganancia {id} no existe");
+            }
+            return await context.Ganancias.FirstOrDefaultAsync(gan => gan.Id == id);
+        }
+
         [HttpPost]
 
         public async Task<ActionResult<int>> Post (Ganancia ganancia)

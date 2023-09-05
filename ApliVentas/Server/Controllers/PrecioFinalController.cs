@@ -25,6 +25,20 @@ namespace ApliVentas.Server.Controllers
             return await context.precioFinals.ToListAsync();
         }
 
+        [HttpGet("{id:int}")]
+
+
+        public async Task<ActionResult<PrecioFinal>> Get(int id)
+        {
+            var existe = await context.precioFinals.AnyAsync(x => x.id == id);
+            if (existe)
+            {
+                return NotFound($"El precio final {id} no existe");
+            }
+            return await context.precioFinals.FirstOrDefaultAsync(pref => pref.id == id);
+        }
+
+
         [HttpPost]
 
         public async Task<ActionResult<int>> Post(PrecioFinal precioFinal)
